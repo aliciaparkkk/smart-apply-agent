@@ -1,63 +1,97 @@
-# Smart Apply Agent
+# Smart Apply Agent 🤖
 
-**Agentic AI** for job applications: an LLM plans and calls tools to parse a posting, tailor your resume, and log to Google Sheets.
+An agentic AI app that tailors your resume to any job posting — automatically.
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for the interview-style design breakdown.
+Paste a job posting, upload your resume, and let the LLM plan and execute a multi-step pipeline to deliver a tailored `.docx` ready to submit.
+
+## Demo
+![Smart Apply Agent](demo.gif)
+
+## How It Works (Agentic Pipeline)
+
+Unlike a fixed script, the **LLM chooses tools** in a loop until the job is done:
+
+```
+parse_job_posting → inspect_resume → tailor_resume → finish
+```
+
+1. **parse_job_posting** — extracts company name, job title, and requirements from raw text
+2. **inspect_resume** — reads and understands the current resume content
+3. **tailor_resume** — rewrites bullet points to match the job, preserving original formatting
+4. **finish** — returns the tailored `.docx` for download
+
+Each step is visible in the UI so you can follow the agent's reasoning in real time.
+
+## Features
+
+- Paste any job posting as raw text — AI parses it automatically
+- Upload your resume as `.docx` — original formatting is preserved
+- Tailored resume downloads instantly as `.docx`
+- Fully agentic: LLM decides what to do next at each step
+
+## Tech Stack
+
+- **Python** — core language
+- **OpenAI API** — LLM + function calling for agentic tool use
+- **Streamlit** — UI
+- **python-docx** — resume parsing and formatting-preserving output
 
 ## Setup
 
-1. **Python 3.10+** and a virtualenv:
-
+**1. Clone and install**
 ```bash
+git clone https://github.com/aliciaparkkk/smart-apply-agent.git
+cd smart-apply-agent
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. **Environment** — copy `.env.example` to `.env` and set:
+**2. Set environment variables**
+```bash
+cp .env.example .env
+```
+Add your OpenAI API key to `.env`:
+```
+OPENAI_API_KEY=sk-...
+```
 
-- `OPENAI_API_KEY` — from [OpenAI](https://platform.openai.com/api-keys)
-- `RESUME_PATH` — optional path to a default resume (any filename; `.docx` or `.pdf`)
-- `GOOGLE_CREDENTIALS_PATH` — path to a Google Cloud **service account** JSON key (default: `credentials.json`)
-- `GOOGLE_SHARE_EMAIL` — optional; your Gmail/Google address to receive the auto-created sheet
-
-3. **Google** (Sheets log + optional Google Doc resume)
-
-- Create a project in [Google Cloud Console](https://console.cloud.google.com/)
-- Enable **Google Sheets API**, **Google Drive API**, and **Google Docs API**
-- Create a service account → download JSON → save as `credentials.json`
-- In **your** Google Drive, create a folder (e.g. `Smart Apply`) and share it with the service account email as **Editor**
-- Copy the folder ID from the URL into `GOOGLE_DRIVE_FOLDER_ID` (or the sidebar field)
-- On first **Apply**, a spreadsheet is created **inside that folder** (uses your storage, not the service account’s)
-- For **best resume formatting**, use **Google Doc link** in the app (share the doc with the service account too). PDF uploads lose layout; `.docx` is also good.
-
-4. **Resume** — upload any `.docx` or `.pdf` in the app, or optionally set `RESUME_PATH`.
-
-## Run
-
+**3. Run**
 ```bash
 streamlit run app.py
 ```
 
-## Flow (agentic)
+## Usage
 
-1. You paste a job posting and provide a resume
-2. Click **Run agent** — the LLM loops: choose tool → execute → observe
-3. Typical plan: `parse_job_posting` → `inspect_resume` → `tailor_resume` → `log_application` → `finish`
-4. Tool steps appear in the UI; open the tailored **Google Doc** link when done
+1. Upload your resume (`.docx`)
+2. Paste a job posting
+3. Click **Run agent**
+4. Download your tailored resume
 
-## Project layout
+## Project Structure
 
 ```
 smart-apply-agent/
 ├── app.py                 # Streamlit UI
 ├── smart_apply/
 │   ├── agent/             # Agent loop + tool definitions
-│   ├── job_parser.py      # Parse posting (tool backend)
-│   ├── resume_tailor.py   # Tailor resume (tool backend)
-│   └── sheets_logger.py   # Google Sheets (tool backend)
-├── ARCHITECTURE.md        # Interview guide
-├── output/                # Tailored resumes (gitignored)
-├── your-resume.pdf        # Optional default resume (any name)
-└── credentials.json       # Google service account (you add this)
+│   ├── job_parser.py      # Job posting parser
+│   ├── resume_tailor.py   # Resume tailoring logic
+│   └── resume_io.py       # Resume read/write with formatting
+├── requirements.txt
+└── .env.example
 ```
+
+## Why It's Agentic
+
+Most AI tools generate text in a single call. This app implements a **ReAct-style agent loop** — the LLM:
+- Receives the task and available tools
+- Decides which tool to call and why
+- Observes the result
+- Repeats until it decides the task is complete
+
+This means the agent can adapt its plan mid-execution, not just follow a fixed script.
+
+---
+
+Built by [Alicia Park](https://aliciaparkkk.github.io/aliciapark_website/) as part of an Agentic AI Engineer interview project.
