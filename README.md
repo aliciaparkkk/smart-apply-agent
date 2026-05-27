@@ -15,10 +15,10 @@ Unlike a fixed script, the **LLM chooses tools** in a loop until the job is done
 parse_job_posting → inspect_resume → tailor_resume → finish
 ```
 
-1. **parse_job_posting** — extracts company name, job title, and requirements from raw text
-2. **inspect_resume** — reads and understands the current resume content
-3. **tailor_resume** — rewrites bullet points to match the job, preserving original formatting
-4. **finish** — returns the tailored `.docx` for download
+1. **parse_job_posting**: extracts company name, job title, and requirements from raw text
+2. **inspect_resume**: reads and understands the current resume content
+3. **tailor_resume**: rewrites bullet points to match the job, preserving original formatting
+4. **finish**: returns the tailored `.docx` for download
 
 Each step is visible in the UI so you can follow the agent's reasoning in real time.
 
@@ -31,10 +31,10 @@ Each step is visible in the UI so you can follow the agent's reasoning in real t
 
 ## Tech Stack
 
-- **Python** — core language
-- **OpenAI API** — LLM + function calling for agentic tool use
-- **Streamlit** — UI
-- **python-docx** — resume parsing and formatting-preserving output
+- **Python**: core language
+- **OpenAI API**: LLM + function calling for agentic tool use
+- **Streamlit**: UI
+- **python-docx**: resume parsing and formatting-preserving output
 
 ## Setup
 
