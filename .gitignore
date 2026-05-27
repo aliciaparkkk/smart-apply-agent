@@ -1,0 +1,11 @@
+.env
+.google_sheet_id
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+output/
+*.json
+!credentials.example.json
+.DS_Store
+.streamlit/
