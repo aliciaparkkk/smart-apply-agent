@@ -1,13 +1,13 @@
 # Smart Apply Agent 🤖
 
-An agentic AI app that tailors your resume to any job posting — automatically.
+An agentic AI app that tailors your resume to any job posting automatically.
 
 Paste a job posting, upload your resume, and let the LLM plan and execute a multi-step pipeline to deliver a tailored `.docx` ready to submit.
 
 ## Demo
 ![Smart Apply Agent](demo.gif)
 
-## How It Works (Agentic Pipeline)
+## How It Works
 
 Unlike a fixed script, the **LLM chooses tools** in a loop until the job is done:
 
@@ -24,8 +24,8 @@ Each step is visible in the UI so you can follow the agent's reasoning in real t
 
 ## Features
 
-- Paste any job posting as raw text — AI parses it automatically
-- Upload your resume as `.docx` — original formatting is preserved
+- Paste any job posting as raw text and AI parses it automatically
+- Upload your resume as `.docx` and original formatting is preserved
 - Tailored resume downloads instantly as `.docx`
 - Fully agentic: LLM decides what to do next at each step
 
@@ -84,7 +84,7 @@ smart-apply-agent/
 
 ## Why It's Agentic
 
-Most AI tools generate text in a single call. This app implements a **ReAct-style agent loop** — the LLM:
+Most AI tools generate text in a single call. This app implements a **ReAct-style agent loop**, the LLM:
 - Receives the task and available tools
 - Decides which tool to call and why
 - Observes the result
